@@ -2,8 +2,9 @@ SOURCE_DIR            = src/main/java
 RESOURCE_DIR          = src/main/resources
 TEST_SOURCE_DIR       = src/test/java
 TEST_RESOURCE_DIR     = src/test/resources
-TARGET_CLASS_DIR      = target/classes
-TARGET_TEST_CLASS_DIR = target/test-classes
+TARGET_DIR            = target
+TARGET_CLASS_DIR      = $(TARGET_DIR)/classes
+TARGET_TEST_CLASS_DIR = $(TARGET_DIR)/test-classes
 
 JAVA_COMPILER = javac
 RWILDCARD     = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
@@ -22,7 +23,13 @@ $(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java
 $(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java
 	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)" $<
 
+jar: $(CLASSES)
+	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)
+	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest.txt
+	@echo "Class-Path: ." >> $(TARGET_DIR)/manifest.txt
+	@echo "Main-Class: com.manenkov.Application" >> $(TARGET_DIR)/manifest.txt
+	@echo "" >> $(TARGET_DIR)/manifest.txt
+	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
+
 clean:
 	rm -rf target/
-
-

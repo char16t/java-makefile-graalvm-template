@@ -1,0 +1,20 @@
+FROM amazoncorretto:17 as baseimage
+RUN yum install -y make shadow-utils
+
+FROM baseimage
+ARG UNAME=testuser
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME
+USER $UNAME
+
+WORKDIR /application
+COPY Makefile /application
+COPY src /application/src
+COPY docs /application/docs
+RUN make jar
+
+VOLUME ["/shared_data"]
+
+ENTRYPOINT ["/bin/sh", "-c", "cp -r /application/target/* /shared_data"]

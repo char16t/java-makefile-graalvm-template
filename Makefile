@@ -18,7 +18,7 @@ CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
 TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
 TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
 
-.PHONY: all clean test javadoc package-sources jar native-image
+.PHONY: all clean test javadoc package-sources jar native-image build-in-docker
 
 all: test jar native-image
 
@@ -58,6 +58,11 @@ jar: $(CLASSES)
 native-image: jar
 	native-image -H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
 		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
+
+build-in-docker:
+	mkdir -p $(TARGET_DIR)/docker-build
+	docker build --build-arg UNAME=$(id -un) --build-arg UID=$(id -u) --build-arg GID=$(id -g) -f Dockerfile.build -t application-image .
+	docker run -it --rm -v $(pwd)/$(TARGET_DIR)/docker-build:/shared_data application-image
 
 clean:
 	rm -rf target/

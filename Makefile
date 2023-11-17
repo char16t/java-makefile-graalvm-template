@@ -40,6 +40,7 @@ test: $(TEST_CLASSES)
 
 javadoc:
 	javadoc -d $(TARGET_JAVADOC_DIR) -sourcepath $(SOURCE_DIR) $(JAVA_PACKAGE)
+	jar --create --file=$(TARGET_DIR)/application-javadoc.jar -C $(TARGET_JAVADOC_DIR) .
 
 jar: $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)

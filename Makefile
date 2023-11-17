@@ -18,7 +18,7 @@ CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
 TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
 TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
 
-.PHONY: all clean test javadoc jar native-image
+.PHONY: all clean test javadoc package-sources jar native-image
 
 all: test jar native-image
 
@@ -37,6 +37,11 @@ test: $(TEST_CLASSES)
 	@echo "" >> $(TARGET_DIR)/manifest-test.txt
 	jar -cmf $(TARGET_DIR)/manifest-test.txt $(TARGET_DIR)/application-test.jar -C $(TARGET_TEST_CLASS_DIR) .
 	java -jar $(TARGET_DIR)/application-test.jar
+
+package-sources:
+	mkdir -p $(TARGET_DIR)
+	jar --create --file=$(TARGET_DIR)/application-sources.jar -C $(SOURCE_DIR) .
+	jar --update --file=$(TARGET_DIR)/application-sources.jar -C $(RESOURCE_DIR) .
 
 javadoc:
 	javadoc -d $(TARGET_JAVADOC_DIR) -sourcepath $(SOURCE_DIR) $(JAVA_PACKAGE)

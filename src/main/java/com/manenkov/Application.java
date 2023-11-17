@@ -5,4 +5,3 @@ public class Application {
         System.out.println("It's works!");
     }
 }
-

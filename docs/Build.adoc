@@ -1,0 +1,17 @@
+= Build
+
+You can build on your local machine:
+
+[source,shell]
+----
+make jar
+# or
+make native-image
+----
+
+Also you can build in Docker container:
+
+[source,shell]
+----
+make build-in-docker
+----

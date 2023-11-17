@@ -1,8 +1,10 @@
 
+- link:Build.adoc[Build]
++
+Instructions on how to build this software from source code.
 - link:Changelog.adoc[Changelog]
 +
 All notable changes of this project grouped by version.
 - link:License.adoc[License]
 +
 Information about the licenses under which the project source code and documentation are distributed.
-

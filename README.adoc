@@ -1,4 +1,4 @@
 == License
 
 The source code is distributed under the link:LICENSE[MIT License]. 
-The documentation is licensed under a https://creativecommons.org/licenses/by/4.0/[Creative Commons Attribution 4.0 International license].
+The documentation is licensed under a link:docs/LICENSE[Creative Commons Attribution 4.0 International license].

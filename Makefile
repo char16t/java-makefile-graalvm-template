@@ -5,10 +5,12 @@ TEST_RESOURCE_DIR     = src/test/resources
 TARGET_DIR            = target
 TARGET_CLASS_DIR      = $(TARGET_DIR)/classes
 TARGET_TEST_CLASS_DIR = $(TARGET_DIR)/test-classes
+TARGET_JAVADOC_DIR    = $(TARGET_DIR)/javadoc
 
 JAVA_COMPILER   = javac
-MAIN_CLASS      = com.manenkov.Application
-MAIN_TEST_CLASS = com.manenkov.ApplicationTest
+JAVA_PACKAGE    = com.manenkov
+MAIN_CLASS      = $(JAVA_PACKAGE).Application
+MAIN_TEST_CLASS = $(JAVA_PACKAGE).ApplicationTest
 
 RWILDCARD    = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
 SOURCES      = $(call RWILDCARD,$(SOURCE_DIR),*.java)
@@ -16,7 +18,7 @@ CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
 TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
 TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
 
-.PHONY: all clean test jar native-image
+.PHONY: all clean test javadoc jar native-image
 
 all: test jar native-image
 
@@ -35,6 +37,9 @@ test: $(TEST_CLASSES)
 	@echo "" >> $(TARGET_DIR)/manifest-test.txt
 	jar -cmf $(TARGET_DIR)/manifest-test.txt $(TARGET_DIR)/application-test.jar -C $(TARGET_TEST_CLASS_DIR) .
 	java -jar $(TARGET_DIR)/application-test.jar
+
+javadoc:
+	javadoc -d $(TARGET_JAVADOC_DIR) -sourcepath $(SOURCE_DIR) $(JAVA_PACKAGE)
 
 jar: $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)

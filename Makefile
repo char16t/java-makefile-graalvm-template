@@ -16,7 +16,7 @@ CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
 TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
 TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
 
-.PHONY: all clean test jar
+.PHONY: all clean test jar native-image
 
 all: $(CLASSES) $(TEST_CLASSES)
 
@@ -43,6 +43,9 @@ jar: $(CLASSES)
 	@echo "Main-Class: $(MAIN_CLASS)" >> $(TARGET_DIR)/manifest.txt
 	@echo "" >> $(TARGET_DIR)/manifest.txt
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
+
+native-image: jar
+	native-image -H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json -jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
 
 clean:
 	rm -rf target/

@@ -26,7 +26,7 @@ $(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java
 $(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java
 	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)" $<
 
-test: $(CLASSES) $(TEST_CLASSES)
+test: $(TEST_CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
 	cp -rf $(TEST_RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
 	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest-test.txt
@@ -34,6 +34,7 @@ test: $(CLASSES) $(TEST_CLASSES)
 	@echo "Main-Class: $(MAIN_TEST_CLASS)" >> $(TARGET_DIR)/manifest-test.txt
 	@echo "" >> $(TARGET_DIR)/manifest-test.txt
 	jar -cmf $(TARGET_DIR)/manifest-test.txt $(TARGET_DIR)/application-test.jar -C $(TARGET_TEST_CLASS_DIR) .
+	java -jar $(TARGET_DIR)/application-test.jar
 
 jar: $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)

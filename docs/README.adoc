@@ -2,8 +2,7 @@
 - link:Changelog.adoc[Changelog]
 +
 All notable changes to this project grouped by version.
-
-== License
-
-Except where otherwise noted, documentation is licensed under a link:LICENSE[Creative Commons Attribution 4.0 International license].
+- link:License.adoc[License]
++
+Information about the licenses under which the project source code and documentation are distributed.
 

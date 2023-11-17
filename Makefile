@@ -6,14 +6,17 @@ TARGET_DIR            = target
 TARGET_CLASS_DIR      = $(TARGET_DIR)/classes
 TARGET_TEST_CLASS_DIR = $(TARGET_DIR)/test-classes
 
-JAVA_COMPILER = javac
-RWILDCARD     = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
-SOURCES       = $(call RWILDCARD,$(SOURCE_DIR),*.java)
-CLASSES       = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
-TEST_SOURCES  = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
-TEST_CLASSES  = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
+JAVA_COMPILER   = javac
+MAIN_CLASS      = com.manenkov.Application
+MAIN_TEST_CLASS = com.manenkov.ApplicationTest
 
-.PHONY: all clean
+RWILDCARD    = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
+SOURCES      = $(call RWILDCARD,$(SOURCE_DIR),*.java)
+CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
+TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
+TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
+
+.PHONY: all clean test jar
 
 all: $(CLASSES) $(TEST_CLASSES)
 
@@ -23,11 +26,20 @@ $(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java
 $(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java
 	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)" $<
 
+test: $(CLASSES) $(TEST_CLASSES)
+	cp -r $(RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
+	cp -rf $(TEST_RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
+	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest-test.txt
+	@echo "Class-Path: ." >> $(TARGET_DIR)/manifest-test.txt
+	@echo "Main-Class: $(MAIN_TEST_CLASS)" >> $(TARGET_DIR)/manifest-test.txt
+	@echo "" >> $(TARGET_DIR)/manifest-test.txt
+	jar -cmf $(TARGET_DIR)/manifest-test.txt $(TARGET_DIR)/application-test.jar -C $(TARGET_TEST_CLASS_DIR) .
+
 jar: $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)
 	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest.txt
 	@echo "Class-Path: ." >> $(TARGET_DIR)/manifest.txt
-	@echo "Main-Class: com.manenkov.Application" >> $(TARGET_DIR)/manifest.txt
+	@echo "Main-Class: $(MAIN_CLASS)" >> $(TARGET_DIR)/manifest.txt
 	@echo "" >> $(TARGET_DIR)/manifest.txt
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 

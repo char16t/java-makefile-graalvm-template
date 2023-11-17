@@ -1,11 +1,11 @@
+== Full documentation
+
+See the link:docs/README.adoc[docs/README.adoc] for full documentation.
+
 == Changelog
 
 All notable changes to this project are documented in link:docs/Changelog.adoc[docs/Changelog.adoc] file. 
 This project adheres to link:https://semver.org/spec/v2.0.0.html[Semantic Versioning].
-
-== Full documentation
-
-See the link:docs/README.adoc[docs/README.adoc] for full documentation.
 
 == License
 

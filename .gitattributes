@@ -1,3 +1,4 @@
 *        text=auto
 Makefile text eol=lf
+LICENSE  text
 *.adoc   text

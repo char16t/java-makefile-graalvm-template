@@ -9,4 +9,4 @@ See the link:docs/README.adoc[docs/README.adoc] for full documentation.
 
 == License
 
-Source code under the link:LICENSE[MIT License]. Documentation under the link:docs/LICENSE[Creative Commons Attribution 4.0 International license]. See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.
+See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.

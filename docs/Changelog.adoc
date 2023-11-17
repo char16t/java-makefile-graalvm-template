@@ -2,3 +2,6 @@
 
 All notable changes to this project are documented in this file. This project adheres to link:https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== 0.0.1 (17.11.2023)
+
+- First stable version.

@@ -1,3 +1,7 @@
+== Full documentation
+
+See the link:docs/README.adoc[docs/README.adoc] for full documentation.
+
 == License
 
 The source code is distributed under the link:LICENSE[MIT License]. 

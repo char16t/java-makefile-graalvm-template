@@ -1,4 +1,4 @@
 == License
 
-The documentation is licensed under a link:LICENSE[Creative Commons Attribution 4.0 International license].
+Except where otherwise noted, documentation is licensed under a link:LICENSE[Creative Commons Attribution 4.0 International license].
 

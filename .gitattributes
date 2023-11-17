@@ -3,4 +3,3 @@ Makefile text eol=lf
 LICENSE  text
 *.adoc   text
 *.java   text
-

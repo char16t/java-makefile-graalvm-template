@@ -18,7 +18,7 @@ TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)
 
 .PHONY: all clean test jar native-image
 
-all: $(CLASSES) $(TEST_CLASSES)
+all: test jar native-image
 
 $(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java
 	$(JAVA_COMPILER) -d $(TARGET_CLASS_DIR)/ -cp $(SOURCE_DIR)/ $<
@@ -45,7 +45,8 @@ jar: $(CLASSES)
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
 native-image: jar
-	native-image -H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json -jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
+	native-image -H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
+		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
 
 clean:
 	rm -rf target/

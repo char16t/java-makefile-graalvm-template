@@ -26,6 +26,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class Application {
+
+    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
     public static void main(final String[] args) throws Exception {
         try {
             new Application().execute();
@@ -36,8 +39,6 @@ public class Application {
     }
 
     void execute() throws Exception {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
         try (final InputStream dataInputStream = getClass().getResourceAsStream("/application.xml")) {
                 final DocumentBuilder builder = factory.newDocumentBuilder();
                 final Document document = builder.parse(dataInputStream);
@@ -81,8 +82,7 @@ public class Application {
         System.exit(0);
     }
 
-    public static <T> T parseXml(String xml, Class<T> clazz) throws Exception {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    public <T> T parseXml(String xml, Class<T> clazz) throws Exception {
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document document = builder.parse(new InputSource(new StringReader(xml)));
 

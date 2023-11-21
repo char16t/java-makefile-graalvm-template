@@ -58,6 +58,7 @@ jar: $(CLASSES)
 native-image: jar
 	native-image -H:+UnlockExperimentalVMOptions \
 		-H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
+		--no-fallback --static \
 		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
 
 build-in-docker:

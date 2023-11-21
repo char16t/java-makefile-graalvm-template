@@ -14,6 +14,7 @@ COPY Makefile /application
 COPY src /application/src
 COPY docs /application/docs
 RUN make jar
+RUN make native-image
 
 VOLUME ["/shared_data"]
 

@@ -56,7 +56,8 @@ jar: $(CLASSES)
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
 native-image: jar
-	native-image -H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
+	native-image -H:+UnlockExperimentalVMOptions \
+		-H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
 		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
 
 build-in-docker:

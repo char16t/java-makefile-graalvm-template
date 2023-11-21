@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -99,15 +101,28 @@ public class Application {
                 final Field field = clazz.getDeclaredField(fieldName);
                 field.setAccessible(true);
 
-                // TODO: Implement other types
-                if (field.getType() == Integer.class) {
+                if (field.getType() == Boolean.class) {
+                    field.set(instance, Boolean.parseBoolean(fieldValue));
+                } else if (field.getType() == Byte.class) {
+                    field.set(instance, Byte.parseByte(fieldValue));
+                } else if (field.getType() == Short.class) {
+                    field.set(instance, Short.parseShort(fieldValue));
+                } else if (field.getType() == Integer.class) {
                     field.set(instance, Integer.parseInt(fieldValue));
+                } else if (field.getType() == Long.class) {
+                    field.set(instance, Long.parseLong(fieldValue));
+                } else if (field.getType() == Character.class) {
+                    field.set(instance, fieldValue.charAt(0));
                 } else if (field.getType() == Float.class) {
                     field.set(instance, Float.parseFloat(fieldValue));
                 } else if (field.getType() == Double.class) {
                     field.set(instance, Double.parseDouble(fieldValue));
                 } else if (field.getType() == String.class) {
                     field.set(instance, fieldValue);
+                } else if (field.getType() == BigInteger.class) {
+                    field.set(instance, new BigInteger(fieldValue));
+                } else if (field.getType() == BigDecimal.class) {
+                    field.set(instance, new BigDecimal(fieldValue));
                 } else {
                     // Handle nested objects
 

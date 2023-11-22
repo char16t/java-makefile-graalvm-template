@@ -1,4 +1,4 @@
-FROM amazoncorretto:17 as baseimage
+FROM amazoncorretto:21 as baseimage
 RUN yum install -y make shadow-utils
 
 FROM baseimage

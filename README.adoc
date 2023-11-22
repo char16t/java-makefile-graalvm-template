@@ -9,4 +9,4 @@ This project adheres to link:https://semver.org/spec/v2.0.0.html[Semantic Versio
 
 == License
 
-This software is available under link:LICENSE[MIT license]. See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.
+This software is available under link:LICENSE[GNU General Public License v3.0]. See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.

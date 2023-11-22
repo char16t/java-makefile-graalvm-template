@@ -1,5 +1,8 @@
 package com.manenkov;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 public class Application {
     public static void main(final String[] args) throws Exception {
         try {
@@ -12,6 +15,10 @@ public class Application {
     }
 
     void execute() throws Exception {
-        System.out.println("It's works!");
+        try (final InputStream inputStream = getClass().getResourceAsStream("/application.properties")) {
+            final Properties properties = new Properties();
+            properties.load(inputStream);
+            System.out.println(properties.getProperty("hello"));
+        }
     }
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<data>
-  <person>
-    <name>John Doe</name>
-    <age>30</age>
-    <nested>12.5</nested>
-  </person>
-</data>

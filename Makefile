@@ -55,11 +55,12 @@ jar: $(CLASSES)
 	@echo "" >> $(TARGET_DIR)/manifest.txt
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
-native-image: jar
+native-image: clean jar
+	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
+	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
 	native-image -H:+UnlockExperimentalVMOptions \
-		-H:ResourceConfigurationFiles=$(TARGET_CLASS_DIR)/resource-config.json \
 		--no-fallback --static \
-		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
+		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
 
 build-in-docker:
 	mkdir -p $(TARGET_DIR)/docker-build

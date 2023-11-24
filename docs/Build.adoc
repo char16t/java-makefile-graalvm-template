@@ -15,3 +15,31 @@ Also you can build in Docker container:
 ----
 make build-in-docker
 ----
+
+== Optimizations
+
+[source]
+---
+valeriy@laptop:~$ native-image  -march=list
+On AMD64, the following machine types are available:
+'compatibility'
+  CPU features: all of 'x86-64'
+'haswell'
+  CPU features: all of 'x86-64' + SSE3 + SSSE3 + SSE4_1 + SSE4_2 + POPCNT + LZCNT + AVX + AVX2 + AES + CLMUL + BMI1 + BMI2 + FMA
+'native'
+  CPU features: CX8 + CMOV + FXSR + HT + MMX + SSE + SSE2 + SSE3 + SSSE3 + SSE4_1 + SSE4_2 + POPCNT + LZCNT + TSC + TSCINV_BIT + AVX + AVX2 + AES + ERMS + CLMUL + BMI1 + BMI2 + FMA + VZEROUPPER + FLUSH + RDTSCP + F16C
+'skylake'
+  CPU features: all of 'haswell' + AMD_3DNOW_PREFETCH + ADX + FLUSHOPT
+'skylake-avx512'
+  CPU features: all of 'skylake' + AVX512F + AVX512DQ + AVX512CD + AVX512BW + AVX512VL + CLWB
+'x86-64'
+  CPU features: CX8 + CMOV + FXSR + MMX + SSE + SSE2
+'x86-64-v1'
+  CPU features: all of 'x86-64'
+'x86-64-v2'
+  CPU features: all of 'x86-64-v1' + SSE3 + SSSE3 + SSE4_1 + SSE4_2 + POPCNT
+'x86-64-v3'
+  CPU features: all of 'x86-64-v2' + LZCNT + AVX + AVX2 + BMI1 + BMI2 + FMA
+'x86-64-v4'
+  CPU features: all of 'x86-64-v3' + AVX512F + AVX512DQ + AVX512CD + AVX512BW + AVX512VL
+---

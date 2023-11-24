@@ -46,4 +46,5 @@ On AMD64, the following machine types are available:
 
 == Links
 
+- link:https://www.graalvm.org/22.3/reference-manual/native-image/overview/BuildOptions/[Native Image Build Options]
 - link:https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md[Native Image Build Output]

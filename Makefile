@@ -59,7 +59,13 @@ native-image: clean jar
 	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
 	native-image -H:+UnlockExperimentalVMOptions \
-		--no-fallback --static \
+		--no-fallback --strict-image-heap \
+		--pgo-instrument --gc=G1 \
+		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
+	cd target && ./application
+	native-image -H:+UnlockExperimentalVMOptions \
+		--no-fallback --strict-image-heap --static --gc=G1 \
+		--pgo=target/default.iprof \
 		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
 
 build-in-docker:

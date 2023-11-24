@@ -61,8 +61,8 @@ native-image: clean jar
 	native-image -H:+UnlockExperimentalVMOptions \
 		--no-fallback --strict-image-heap \
 		--pgo-instrument --gc=G1 \
-		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
-	cd target && ./application
+		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application-profile
+	cd target && ./application-profile
 	native-image -H:+UnlockExperimentalVMOptions \
 		--no-fallback --strict-image-heap --static --gc=G1 \
 		--pgo=target/default.iprof \

@@ -43,3 +43,7 @@ On AMD64, the following machine types are available:
 'x86-64-v4'
   CPU features: all of 'x86-64-v3' + AVX512F + AVX512DQ + AVX512CD + AVX512BW + AVX512VL
 ---
+
+== Links
+
+- link:https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md[Native Image Build Output]

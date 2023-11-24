@@ -7,7 +7,7 @@ TARGET_CLASS_DIR      = $(TARGET_DIR)/classes
 TARGET_TEST_CLASS_DIR = $(TARGET_DIR)/test-classes
 TARGET_JAVADOC_DIR    = $(TARGET_DIR)/javadoc
 
-JAVA_COMPILER   = javac
+JAVA_COMPILER   = javac -source 21 --enable-preview
 JAVA_PACKAGE    = com.manenkov
 MAIN_CLASS      = $(JAVA_PACKAGE).Application
 MAIN_TEST_CLASS = $(JAVA_PACKAGE).ApplicationTest
@@ -59,12 +59,14 @@ native-image: clean jar
 	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
 	native-image -H:+UnlockExperimentalVMOptions \
-		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=native --gc=G1 \
+		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=compatibility --gc=G1 \
+		--enable-preview \
 		--pgo-instrument \
 		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application-profile
 	cd target && ./application-profile
 	native-image -H:+UnlockExperimentalVMOptions \
-		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=native --gc=G1 --static \
+		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=compatibility --gc=G1 --static \
+		--enable-preview \
 		--pgo=target/default.iprof \
 		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
 

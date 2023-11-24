@@ -2,6 +2,9 @@ package com.manenkov;
 
 public class Application {
     void execute() throws Exception {
+        Thread thread = Thread.ofVirtual().start(() -> System.out.println("Hello"));
+        thread.join();
+        
         BTree<String, String> st = new BTree<String, String>();
 
         st.put("www.cs.princeton.edu", "128.112.136.12");

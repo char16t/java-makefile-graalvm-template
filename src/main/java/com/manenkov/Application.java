@@ -13,6 +13,10 @@ public class Application {
 
     public static void version() {
         System.out.println("Version 0.0.2");
+    }
+
+    public static void help() {
+        System.out.println("Short help");
     } 
 
     public static void main(String[] args) throws Exception {

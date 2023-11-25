@@ -17,7 +17,7 @@ public class CommandLineParser {
             CommandLineParser parser = new CommandLineParser(
                 new ByteArrayInputStream(String.join(" ", args).getBytes(StandardCharsets.UTF_8))
             );
-            parser.Program();
+            parser.Command();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,9 +30,22 @@ SKIP : {
   " " | "\t" | "\n" | "\r"
 }
 
-void Program() :
+void Command() :
 {}
 {
-  "hello" "world" <EOF>
+    Version() | Help()
+}
+
+void Version() :
+{}
+{
+  "--version" <EOF>
   { Application.version(); }
+}
+
+void Help() :
+{}
+{
+  "--help" <EOF>
+  { Application.help(); }
 }

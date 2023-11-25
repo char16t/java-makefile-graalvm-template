@@ -5,7 +5,6 @@ import com.manenkov.parser.CommandLineParser;
 public class Application {
     void execute(String[] args) throws Exception {
         Thread thread = Thread.ofVirtual().start(() -> {
-            System.out.println("It's works!");
             CommandLineParser.parse(args);
         });
         thread.join();
@@ -17,6 +16,10 @@ public class Application {
 
     public static void help() {
         System.out.println("Short help");
+    } 
+
+    public static void welcome(String name) {
+        System.out.println("Hello, " + name + "!");
     } 
 
     public static void main(String[] args) throws Exception {

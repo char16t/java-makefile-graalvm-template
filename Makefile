@@ -58,7 +58,7 @@ javadoc:
 	javadoc -d $(TARGET_JAVADOC_DIR) -sourcepath $(SOURCE_DIR) $(JAVA_PACKAGE)
 	jar --create --file=$(TARGET_DIR)/application-javadoc.jar -C $(TARGET_JAVADOC_DIR) .
 
-jar: $(GENERATED_CLASSES) $(CLASSES)
+jar: generate-sources $(GENERATED_CLASSES) $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)
 	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest.txt
 	@echo "Class-Path: ." >> $(TARGET_DIR)/manifest.txt
@@ -66,7 +66,7 @@ jar: $(GENERATED_CLASSES) $(CLASSES)
 	@echo "" >> $(TARGET_DIR)/manifest.txt
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
-native-image: clean generate-sources jar
+native-image: clean jar
 	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
 	native-image -H:+UnlockExperimentalVMOptions \

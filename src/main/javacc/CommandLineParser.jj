@@ -1,6 +1,11 @@
 // CommandLineParser.jj
 options {
-  STATIC = true;
+  STATIC = false;
+  /*
+  DEBUG_PARSER=true;
+  DEBUG_LOOKAHEAD=true;
+  DEBUG_TOKEN_MANAGER=true;
+  */
 }
 
 PARSER_BEGIN(CommandLineParser)
@@ -13,7 +18,6 @@ import com.manenkov.Application;
 public class CommandLineParser {
     public static void parse(String[] args) {
         try {
-            System.out.println(String.join(" ", args));
             CommandLineParser parser = new CommandLineParser(
                 new ByteArrayInputStream(String.join(" ", args).getBytes(StandardCharsets.UTF_8))
             );
@@ -30,22 +34,37 @@ SKIP : {
   " " | "\t" | "\n" | "\r"
 }
 
+TOKEN : { 
+    < WELCOME : "welcome" >
+  | < ARGUMENT : (["a"-"z","A"-"Z","0"-"9"])+ >
+}
+
 void Command() :
 {}
 {
-    Version() | Help()
+  Welcome() | Version() | Help()
+}
+
+
+void Welcome() :
+{
+  Token name;
+}
+{
+  <WELCOME> name=<ARGUMENT>
+  { Application.welcome(name.toString()); }
 }
 
 void Version() :
 {}
 {
-  "--version" <EOF>
+  "--version"
   { Application.version(); }
 }
 
 void Help() :
 {}
 {
-  "--help" <EOF>
+  "--help"
   { Application.help(); }
 }

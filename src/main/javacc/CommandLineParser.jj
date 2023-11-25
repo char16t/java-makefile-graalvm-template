@@ -1,6 +1,6 @@
 // CommandLineParser.jj
 options {
-  STATIC = false;
+  STATIC = true;
 }
 
 PARSER_BEGIN(CommandLineParser)

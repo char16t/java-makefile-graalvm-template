@@ -16,7 +16,6 @@ package com.manenkov.parser;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import com.manenkov.Application;
-import com.manenkov.ApplicationParseException;
 
 public class CommandLineParser {
     public static void parse(String[] args) {
@@ -47,8 +46,18 @@ TOKEN : {
 void Command() :
 {}
 {
-  Welcome() | Version() | Help()
-    | { throw new ParseException(Application.parseError()); }
+    Version() 
+  | Help() 
+  | Welcome()
+  | { throw new ParseException(Application.parseError()); }
+}
+
+void WelcomeWrapper() :
+{
+  Token name;
+}
+{
+  Welcome() | { throw new ParseException(Application.parseWelcomeError()); }
 }
 
 void Welcome() :

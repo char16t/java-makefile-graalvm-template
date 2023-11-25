@@ -1,6 +1,8 @@
 // CommandLineParser.jj
 options {
   STATIC = false;
+  UNICODE_INPUT=true;
+  JAVA_UNICODE_ESCAPE=true;
   /*
   DEBUG_PARSER=true;
   DEBUG_LOOKAHEAD=true;
@@ -14,6 +16,7 @@ package com.manenkov.parser;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import com.manenkov.Application;
+import com.manenkov.ApplicationParseException;
 
 public class CommandLineParser {
     public static void parse(String[] args) {
@@ -22,8 +25,10 @@ public class CommandLineParser {
                 new ByteArrayInputStream(String.join(" ", args).getBytes(StandardCharsets.UTF_8))
             );
             parser.Command();
+        } catch (ParseException e) {
+          System.out.println(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+          e.printStackTrace();
         }
     }
 }
@@ -43,28 +48,28 @@ void Command() :
 {}
 {
   Welcome() | Version() | Help()
+    | { throw new ParseException(Application.parseError()); }
 }
-
 
 void Welcome() :
 {
   Token name;
 }
 {
-  <WELCOME> name=<ARGUMENT>
+  <WELCOME> name=<ARGUMENT> <EOF>
   { Application.welcome(name.toString()); }
 }
 
 void Version() :
 {}
 {
-  "--version"
+  "--version" <EOF>
   { Application.version(); }
 }
 
 void Help() :
 {}
 {
-  "--help"
+  "--help" <EOF>
   { Application.help(); }
 }

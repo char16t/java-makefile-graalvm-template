@@ -20,7 +20,15 @@ public class Application {
 
     public static void welcome(String name) {
         System.out.println("Hello, " + name + "!");
-    } 
+    }
+
+    public static String parseError() {
+        return "Short help after parse error.";
+    }
+
+    public static String parseWelcomeError() {
+        return "Wrong welcome format.";
+    }
 
     public static void main(String[] args) throws Exception {
         new Application().execute(args);

@@ -1,0 +1,38 @@
+// CommandLineParser.jj
+options {
+  STATIC = false;
+}
+
+PARSER_BEGIN(CommandLineParser)
+package com.manenkov.parser;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import com.manenkov.Application;
+
+public class CommandLineParser {
+    public static void parse(String[] args) {
+        try {
+            System.out.println(String.join(" ", args));
+            CommandLineParser parser = new CommandLineParser(
+                new ByteArrayInputStream(String.join(" ", args).getBytes(StandardCharsets.UTF_8))
+            );
+            parser.Program();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+PARSER_END(CommandLineParser)
+
+SKIP : {
+  " " | "\t" | "\n" | "\r"
+}
+
+void Program() :
+{}
+{
+  "hello" "world" <EOF>
+  { Application.version(); }
+}

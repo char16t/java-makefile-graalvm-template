@@ -5,3 +5,4 @@ LICENSE  text
 *.java   text
 *.xml    text
 *.xsd    text
+*.jar    binary

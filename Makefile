@@ -6,24 +6,35 @@ TARGET_DIR            = target
 TARGET_CLASS_DIR      = $(TARGET_DIR)/classes
 TARGET_TEST_CLASS_DIR = $(TARGET_DIR)/test-classes
 TARGET_JAVADOC_DIR    = $(TARGET_DIR)/javadoc
+GENERATED_SOURCE_DIR  = $(TARGET_DIR)/generated-sources
 
 JAVA_COMPILER   = javac -source 21 --enable-preview
+JAVACC          = java -cp tools/javacc-7.0.13.jar javacc
 JAVA_PACKAGE    = com.manenkov
 MAIN_CLASS      = $(JAVA_PACKAGE).Application
 MAIN_TEST_CLASS = $(JAVA_PACKAGE).ApplicationTest
 
-RWILDCARD    = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
-SOURCES      = $(call RWILDCARD,$(SOURCE_DIR),*.java)
-CLASSES      = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
-TEST_SOURCES = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
-TEST_CLASSES = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
+RWILDCARD         = $(foreach d,$(wildcard $(1:=/*)),$(call RWILDCARD,$d,$2) $(filter $(subst *,%,$2),$d))
+SOURCES           = $(call RWILDCARD,$(SOURCE_DIR),*.java)
+CLASSES           = $(SOURCES:$(SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
+GENERATED_SOURCES = $(call RWILDCARD,$(GENERATED_SOURCE_DIR),*.java)
+GENERATED_CLASSES = $(GENERATED_SOURCES:$(GENERATED_SOURCE_DIR)/%.java=$(TARGET_CLASS_DIR)/%.class)
+TEST_SOURCES      = $(call RWILDCARD,$(TEST_SOURCE_DIR),*.java)
+TEST_CLASSES      = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS_DIR)/%.class)
 
-.PHONY: all clean test javadoc package-sources jar native-image build-in-docker
+.PHONY: all clean test javadoc package-sources jar native-image build-in-docker generate-sources
 
 all: test jar native-image
 
-$(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java
-	$(JAVA_COMPILER) -d $(TARGET_CLASS_DIR)/ -cp $(SOURCE_DIR)/ $<
+generate-sources:
+	$(JAVACC) -OUTPUT_DIRECTORY=$(TARGET_DIR)/generated-sources/com/manenkov/parser \
+		src/main/javacc/CommandLineParser.jj
+	
+$(GENERATED_CLASSES): $(TARGET_CLASS_DIR)/%.class: $(GENERATED_SOURCE_DIR)/%.java generate-sources
+	$(JAVA_COMPILER) -d $(TARGET_CLASS_DIR)/ -cp $(SOURCE_DIR)/:$(GENERATED_SOURCE_DIR)/ $<
+
+$(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java generate-sources
+	$(JAVA_COMPILER) -d $(TARGET_CLASS_DIR)/ -cp $(SOURCE_DIR)/:$(GENERATED_SOURCE_DIR)/ $<
 
 $(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java
 	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)" $<
@@ -47,7 +58,7 @@ javadoc:
 	javadoc -d $(TARGET_JAVADOC_DIR) -sourcepath $(SOURCE_DIR) $(JAVA_PACKAGE)
 	jar --create --file=$(TARGET_DIR)/application-javadoc.jar -C $(TARGET_JAVADOC_DIR) .
 
-jar: $(CLASSES)
+jar: $(GENERATED_CLASSES) $(CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_CLASS_DIR)
 	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest.txt
 	@echo "Class-Path: ." >> $(TARGET_DIR)/manifest.txt
@@ -55,7 +66,7 @@ jar: $(CLASSES)
 	@echo "" >> $(TARGET_DIR)/manifest.txt
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
-native-image: clean jar
+native-image: clean generate-sources jar
 	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
 	native-image -H:+UnlockExperimentalVMOptions \

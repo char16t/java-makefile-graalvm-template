@@ -67,19 +67,10 @@ jar: generate-sources $(GENERATED_CLASSES) $(CLASSES)
 	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application.jar -C $(TARGET_CLASS_DIR) .
 
 native-image: clean jar
-	java -agentlib:native-image-agent=config-merge-dir=$(TARGET_CLASS_DIR)/META-INF/native-image,experimental-class-define-support -jar target/application.jar
-	jar -cmf $(TARGET_DIR)/manifest.txt $(TARGET_DIR)/application-native.jar -C $(TARGET_CLASS_DIR) .
-	native-image -H:+UnlockExperimentalVMOptions \
-		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=compatibility --gc=G1 \
-		--enable-preview \
-		--pgo-instrument \
-		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application-profile
-	cd target && ./application-profile
 	native-image -H:+UnlockExperimentalVMOptions \
 		--no-fallback --strict-image-heap -R:MaxHeapSize=1G -march=compatibility --gc=G1 --static \
 		--enable-preview \
-		--pgo=target/default.iprof \
-		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
+		-jar $(TARGET_DIR)/application.jar $(TARGET_DIR)/application
 
 build-in-docker:
 	mkdir -p $(TARGET_DIR)/docker-build

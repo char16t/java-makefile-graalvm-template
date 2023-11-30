@@ -1,0 +1,8 @@
+*                text=auto
+.gitattributes   text
+.gitignore       text
+LICENSE          text
+Makefile         text
+*.adoc           text
+*.java           text
+*.xml            text

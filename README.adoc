@@ -1,3 +1,16 @@
+This repository contains a example built with Makefile and GraalVM of a native Java application. You can use it as a starting template for developing embedded Java applications.
+
+== Features
+
+- No build systems are used, just pure `javac`. The build is automated using the Makefile;
+- Java 21 is used, with the ability to easily enable and disable the `--enable-preview` flag. Virtual threads are used as an example of an experimental feature;
+- The example includes working with resource files. They are included and excluded from the bundle;
+- The example has a demonstration of working with code generation at compilation using JavaCC as an example;
+- The example has a demonstration of autotests without using any dependencies;
+- The example has a demonstration of generating javadocs;
+- The example applies Profile-Guided Optimizations;
+- Supports building in Docker (useful for CI Pipelines) and natively on your machine.
+
 == Full documentation
 
 See the link:docs/README.adoc[docs/README.adoc] for full documentation.

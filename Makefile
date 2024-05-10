@@ -24,7 +24,7 @@ TEST_CLASSES      = $(TEST_SOURCES:$(TEST_SOURCE_DIR)/%.java=$(TARGET_TEST_CLASS
 
 .PHONY: all clean test javadoc package-sources jar native-image build-in-docker generate-sources
 
-all: test jar native-image
+all: jar native-image
 
 generate-sources:
 	$(JAVACC) -OUTPUT_DIRECTORY=$(TARGET_DIR)/generated-sources/com/manenkov/parser \
@@ -36,10 +36,10 @@ $(GENERATED_CLASSES): $(TARGET_CLASS_DIR)/%.class: $(GENERATED_SOURCE_DIR)/%.jav
 $(CLASSES): $(TARGET_CLASS_DIR)/%.class: $(SOURCE_DIR)/%.java generate-sources
 	$(JAVA_COMPILER) -d $(TARGET_CLASS_DIR)/ -cp $(SOURCE_DIR)/:$(GENERATED_SOURCE_DIR)/ $<
 
-$(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java
-	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)" $<
+$(TEST_CLASSES): $(TARGET_TEST_CLASS_DIR)/%.class: $(TEST_SOURCE_DIR)/%.java generate-sources
+	$(JAVA_COMPILER) -d $(TARGET_TEST_CLASS_DIR)/ -cp "$(TEST_SOURCE_DIR)/:$(SOURCE_DIR)/:$(GENERATED_SOURCE_DIR)" $<
 
-test: $(TEST_CLASSES)
+test: $(GENERATED_CLASSES) $(TEST_CLASSES)
 	cp -r $(RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
 	cp -rf $(TEST_RESOURCE_DIR)/* $(TARGET_TEST_CLASS_DIR)
 	@echo "Manifest-Version: 1.0" > $(TARGET_DIR)/manifest-test.txt

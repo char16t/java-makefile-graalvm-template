@@ -13,6 +13,8 @@ This repository contains a example built with Makefile and GraalVM of a native J
 
 [source,shell]
 ----
+make test
+# or
 make jar
 # or
 make native-image
@@ -31,4 +33,4 @@ This project adheres to link:https://semver.org/spec/v2.0.0.html[Semantic Versio
 
 == License
 
-This software is available under link:LICENSE[GNU General Public License v3.0]. See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.
+This software is available under link:UNLICENSE[Public Domain]. See the link:docs/License.adoc[docs/License.adoc] for detailed licensing information.

@@ -11,6 +11,15 @@ This repository contains a example built with Makefile and GraalVM of a native J
 - The example applies Profile-Guided Optimizations;
 - Supports building in Docker (useful for CI Pipelines) and natively on your machine.
 
+[source,shell]
+----
+make jar
+# or
+make native-image
+# or
+make build-in-docker
+----
+
 == Full documentation
 
 See the link:docs/README.adoc[docs/README.adoc] for full documentation.

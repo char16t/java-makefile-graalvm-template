@@ -1,5 +1,5 @@
 = License
 
-Except where otherwise noted, the source code is distributed under the link:/LICENSE[GNU General Public License v3.0]. 
+Except where otherwise noted, the source code is distributed under the link:/UNLICENSE[Public Domain]. 
 
 Except where otherwise noted, documentation is licensed under a link:/docs/LICENSE[Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International license].

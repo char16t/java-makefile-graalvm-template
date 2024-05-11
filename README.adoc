@@ -8,8 +8,7 @@ This repository contains a example built with Makefile and GraalVM of a native J
 - The example has a demonstration of working with code generation at compilation using JavaCC as an example;
 - The example has a demonstration of autotests without using any dependencies;
 - The example has a demonstration of generating javadocs;
-- The example applies Profile-Guided Optimizations;
-- Supports building in Docker (useful for CI Pipelines) and natively on your machine.
+- The example applies Profile-Guided Optimizations.
 
 [source,shell]
 ----
@@ -18,8 +17,6 @@ make test
 make jar
 # or
 make native-image
-# or
-make build-in-docker
 ----
 
 == Full documentation

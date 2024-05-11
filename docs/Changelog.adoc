@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file. This project adheres to link:https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== 0.0.3 (May 11, 2024)
+
+- Source code licensed under Public Domain.
+
 == 0.0.2 (November 23, 2023)
 
 - Source code licensed under GNU General Public License v3.0.

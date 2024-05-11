@@ -9,13 +9,6 @@ make jar
 make native-image
 ----
 
-Also you can build in Docker container:
-
-[source,shell]
-----
-make build-in-docker
-----
-
 == Optimizations
 
 [source]

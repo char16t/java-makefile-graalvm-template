@@ -81,11 +81,5 @@ native-image: clean jar
 		--pgo=target/default.iprof \
 		-jar $(TARGET_DIR)/application-native.jar $(TARGET_DIR)/application
 
-build-in-docker:
-	mkdir -p $(TARGET_DIR)/docker-build
-	docker build --build-arg UNAME=$$(id -un) --build-arg UID=$$(id -u) --build-arg GID=$$(id -g) -f Dockerfile.build -t application-image .
-	docker run -it --rm -v $$(pwd)/$(TARGET_DIR)/docker-build:/shared_data application-image
-	echo $$(docker image rm application-image)
-
 clean:
 	rm -rf target/
